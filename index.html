@@ -103,9 +103,9 @@
   /* ---------- HERO ---------- */
   .hero{
     background:
-      radial-gradient(circle at 92% 8%,rgba(244,148,63,.20) 0,rgba(244,148,63,0) 42%),
-      radial-gradient(circle at 0% 100%,rgba(73,77,75,.07) 0,rgba(73,77,75,0) 45%),
-      var(--bg-soft);
+      /* cream wash over the photo: heavier on the left behind the headline */
+      linear-gradient(to right,rgba(250,246,241,.95) 0%,rgba(250,246,241,.88) 45%,rgba(250,246,241,.62) 100%),
+      url("hero.webp") center 40%/cover no-repeat var(--bg-soft);
     padding:56px 0 48px;position:relative;overflow:hidden;
   }
   .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
@@ -345,7 +345,12 @@
   @media(max-width:620px){
     .wrap{padding:0 16px}
     .offer-bar{font-size:.84rem}
-    .hero{padding:32px 0 36px}
+    .hero{
+      padding:32px 0 36px;
+      background:
+        linear-gradient(to bottom,rgba(250,246,241,.93) 0%,rgba(250,246,241,.86) 100%),
+        url("hero.webp") 70% center/cover no-repeat var(--bg-soft);
+    }
     .hero h1{font-size:clamp(1.65rem,7.6vw,2.1rem)}
     .hero p.lead{font-size:1rem}
     .hero-points li{font-size:.9rem}
