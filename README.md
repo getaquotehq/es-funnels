@@ -1,0 +1,45 @@
+# Energy Saver Hub funnels
+
+Meta-ads landing page for Energy Saver Hub (operated by The Pirotta Group):
+free, no-obligation solar and battery site visit and quote, Victoria only.
+
+| Path | What |
+|---|---|
+| `index.html` | Landing page + 5-step booking form (Meta Pixel `1008923305193180`) |
+| `privacy-policy/` | Privacy Policy |
+| `terms/` | Terms & Conditions, including the $500 offer conditions (`#offer`) |
+| `logo.png`, `favicon.png`, `apple-touch-icon.png` | Brand assets cut from `ESH Sharper Logo Preview.png` |
+| `supabase/migrations/` | Database setup for ESH's Supabase project `axjbalzirbdhfuutmmuw` |
+
+Brand: `#f4943f` orange, `#494D4B` grey, Poppins.
+
+## $500 offer end date
+
+`OFFER_END` near the top of the script in `index.html`. Every $500 mention
+hides itself after that date. Update the date in `terms/index.html` (offer
+section) at the same time.
+
+## Where leads go
+
+1. The form uploads the optional bill to the private `bills` bucket and inserts
+   into `leads` (publishable key: insert only, no read back). Non-Victorian
+   postcodes and renters are stopped before submit.
+2. The `leads_forward` trigger then, asynchronously:
+   - POSTs a flat JSON copy to the Make.com webhook, and
+   - POSTs the row to ql-hq's `esh-intake` function (ql-backend), which creates
+     the lead under **The Pirotta Group** in QuoteLeadsHQ, copies the bill, and
+     writes `qlhq_lead_id` / `qlhq_synced_at` back.
+3. Leads ql-hq missed can be re-sent with `select public.forward_leads_to_qlhq();`.
+
+Inbox view: Table Editor > Views > `lead_inbox` (Melbourne time).
+
+This is completely separate from TFA Solar (`tfa-funnels`): its own Supabase
+project, its own ql-hq function, secret and company.
+
+## One-off setup (ESH Supabase SQL editor)
+
+1. Run `supabase/migrations/20261116000000_leads_bills_and_forwarding.sql`.
+2. Store the intake secret (same value as `ESH_INTAKE_SECRET` in ql-hq):
+   `select vault.create_secret('<secret>', 'qlhq_intake_secret');`
+3. In ql-hq's Edge Function secrets, set `ESH_SERVICE_ROLE_KEY` to this
+   project's secret key (needed for bill copy + write-back).
