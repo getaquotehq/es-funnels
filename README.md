@@ -13,11 +13,12 @@ free, no-obligation solar and battery site visit and quote, Victoria only.
 
 Brand: `#f4943f` orange, `#494D4B` grey, Poppins.
 
-## $500 offer end date
+## $500 offer
 
-`OFFER_END` near the top of the script in `index.html`. Every $500 mention
-hides itself after that date. Update the date in `terms/index.html` (offer
-section) at the same time.
+No end date is shown; the offer runs until it is taken down. To end it,
+remove the elements marked `offer-live` in `index.html` (offer bar, the
+"$500 off" point under the headline, the $500 section) and update the offer
+section of `terms/index.html`. The ads also say "$500 off this month".
 
 ## Where leads go
 

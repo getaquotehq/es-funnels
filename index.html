@@ -366,7 +366,7 @@ src="https://www.facebook.com/tr?id=1008923305193180&ev=PageView&noscript=1"
 <body>
 
 <!-- ================= OFFER BAR ================= -->
-<div class="offer-bar"><span class="offer-live">$500 off your solar or battery install, <span class="offer-end-short">this month only</span>. <a href="#form">Book your free site visit</a></span></div>
+<div class="offer-bar"><span class="offer-live">$500 off your solar or battery install this month. <a href="#form">Book your free site visit</a></span></div>
 
 <!-- ================= HEADER ================= -->
 <header>
@@ -653,7 +653,7 @@ src="https://www.facebook.com/tr?id=1008923305193180&ev=PageView&noscript=1"
       <div class="hl-num">$500<small>off your installation</small></div>
       <div>
         <h3>Book this month and save $500</h3>
-        <p>Book your free site visit through this page before <strong class="offer-end-date">the offer ends</strong> and we'll take $500 off your solar, battery or solar + battery installation.</p>
+        <p>Book your free site visit through this page while the offer runs and we'll take $500 off your solar, battery or solar + battery installation.</p>
         <div class="note">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
           <span>The site visit and quote are free with no obligation. If you don't go ahead, you don't pay a cent. <a href="terms/#offer" style="color:#fff">Offer conditions</a>.</span>
@@ -711,30 +711,12 @@ const MAX_BILL_MB  = 10;
 const LEAD_SOURCE  = 'FB - ESH Free Site Visit LP';
 const PHONE_DISPLAY = '0416 170 095';
 
-/* ---- $500 offer: last day it can be claimed (inclusive, Melbourne time).
-   Change this one date to extend the offer. After it passes, every
-   $500 mention on the page hides itself. Keep terms/ in step. */
-const OFFER_END = '2026-12-16';
-
 const db = (window.supabase && SUPABASE_URL && SUPABASE_KEY)
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } })
   : null;
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* --- offer end date --- */
-(function(){
-  const end = new Date(OFFER_END + 'T23:59:59+11:00');
-  const live = Date.now() <= end.getTime();
-  if(!live){
-    document.querySelectorAll('.offer-live').forEach(el=>el.style.display='none');
-    return;
-  }
-  const nice = end.toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric',timeZone:'Australia/Melbourne'});
-  const short = end.toLocaleDateString('en-AU',{day:'numeric',month:'short',timeZone:'Australia/Melbourne'});
-  document.querySelectorAll('.offer-end-date').forEach(el=>el.textContent = nice);
-  document.querySelectorAll('.offer-end-short').forEach(el=>el.textContent = 'ends ' + short);
-})();
 
 const form = document.getElementById('leadForm');
 const card = form.closest('.form-card');
