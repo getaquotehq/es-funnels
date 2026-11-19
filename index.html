@@ -951,6 +951,15 @@ form.addEventListener('submit', async (e)=>{
       else billPath = up.data.path;
     }
 
+    /* consent record: the exact wording they saw on the button screen. Kept
+       inside tracking so the table and the Make payload stay as they are. */
+    const consentEl = form.querySelector('.consent');
+    const consent = {
+      text: consentEl ? consentEl.textContent.replace(/\s+/g,' ').trim().slice(0,1000) : '',
+      agreed_at: new Date().toISOString(),
+      page: tracking.page || ''
+    };
+
     /* 2. insert the lead (insert only, no read back) */
     const hasSolar = A.has_solar === 'Yes';
     const fitRate = (A.fit_rate || '').slice(0,40);
@@ -968,7 +977,7 @@ form.addEventListener('submit', async (e)=>{
       bill_path:      billPath,
       bill_filename:  chosenFile ? chosenFile.name.slice(0,200) : null,
       source:         LEAD_SOURCE,
-      tracking
+      tracking:       { ...tracking, consent }
     });
     if(error) throw error;
 

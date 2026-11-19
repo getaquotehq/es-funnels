@@ -26,10 +26,14 @@ section of `terms/index.html`. The ads also say "$500 off this month".
    into `leads` (publishable key: insert only, no read back). Non-Victorian
    postcodes and renters are stopped before submit.
 2. The `leads_forward` trigger then, asynchronously:
-   - POSTs a flat JSON copy to the Make.com webhook, and
+   - POSTs a flat JSON copy to the Make.com webhook (a fixed list of fields,
+     so the Make scenario's mapping never changes when the row does), and
    - POSTs the row to ql-hq's `esh-intake` function (ql-backend), which creates
      the lead under **The Pirotta Group** in QuoteLeadsHQ, copies the bill, and
      writes `qlhq_lead_id` / `qlhq_synced_at` back.
+   The consent record (the exact consent line shown, when, and on which page)
+   rides in `tracking.consent`; `esh-intake` turns it into the lead's
+   `consent_text` in ql-hq, which shows read only on the lead.
 3. Leads ql-hq missed can be re-sent with `select public.forward_leads_to_qlhq();`.
 
 Inbox view: Table Editor > Views > `lead_inbox` (Melbourne time).
