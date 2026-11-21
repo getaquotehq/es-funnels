@@ -5,8 +5,10 @@
 -- Deploy supabase/functions/forward-to-qlhq first (Verify JWT off: the
 -- intake secret is checked by ql-hq).
 --
--- Rollback (back to ql-hq's old esh-intake): run this file again with the
--- url set to 'https://wjadekgptkstfdootuol.supabase.co/functions/v1/esh-intake'.
+-- Rollback (back to ql-hq's old esh-intake): run this file again with BOTH
+--   url  := 'https://wjadekgptkstfdootuol.supabase.co/functions/v1/esh-intake'
+--   body := to_jsonb(lead)
+-- (the old function takes the whole row, not just the id).
 create or replace function public.send_lead_to_qlhq(lead public.leads)
 returns void
 language plpgsql
